@@ -6,14 +6,7 @@ from alpaca.trading.client import TradingClient
 from alpaca.data.historical import StockHistoricalDataClient
 from alpaca.data.requests import StockBarsRequest
 from alpaca.data.timeframe import TimeFrame, TimeFrameUnit
-
-from dotenv import load_dotenv
-load_dotenv()
-
-trading_method = os.getenv("TRADING_METHOD", "paper")
-ALPACA_API_KEY = os.getenv("ALPACA_API_KEY") if trading_method == "live" else os.getenv("PAPER_ALPACA_API_KEY")
-ALPACA_SECRET_KEY = os.getenv("ALPACA_SECRET_KEY") if trading_method == "live" else os.getenv("PAPER_ALPACA_SECRT_KEY")
-ALPACA_BASE_URL = os.getenv("ALPACA_BASE_URL") if trading_method == "live" else os.getenv("PAPER_ALPACA_BASE_URL")
+from config import ALPACA_API_KEY, ALPACA_SECRET_KEY
 
 class AlpacaClient:
     def __init__(self):
