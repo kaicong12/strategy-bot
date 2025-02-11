@@ -7,8 +7,10 @@ sys.path.append(parent_dir)
 
 from market_data import MarketData
 from trading_bot import TradingBot
+from alpaca_client import AlpacaClient 
 
 if __name__ == "__main__":
-    bot = TradingBot()
+    alpaca_client = AlpacaClient()
+    bot = TradingBot(alpaca_client)
     market_data = MarketData(bot.handle_trade_signal)
     market_data.start_stream()

@@ -8,8 +8,8 @@ from config import (
 )
 
 class TradingBot:
-    def __init__(self):
-        self.api = tradeapi.REST(ALPACA_API_KEY, ALPACA_SECRET_KEY, ALPACA_BASE_URL)
+    def __init__(self, alpaca_client):
+        self.alpaca_client = alpaca_client
         self.position_open = False
 
     def place_order(self, side, price, atr):
@@ -18,12 +18,11 @@ class TradingBot:
         take_profit = price + (atr * 2) if side == "buy" else price - (atr * 2)
 
         try:
-            self.api.submit_order(
+            self.alpaca_client.submit_order(
                 symbol=SYMBOL,
                 qty=TRADE_QUANTITY,
                 side=side,
                 type="market",
-                time_in_force="gtc"
             )
             print(f"✅ {side.upper()} Order Placed @ ${price:.2f}")
             print(f"Stop-Loss: {stop_loss:.2f} | Take-Profit: {take_profit:.2f}")

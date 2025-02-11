@@ -1,5 +1,4 @@
-import os
-
+import requests
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 from alpaca.trading.client import TradingClient
@@ -34,3 +33,53 @@ class AlpacaClient:
             type=type,
             time_in_force="day"
         )
+
+    def get_held_stocks(self):
+        """Fetches currently held stocks from Alpaca account."""
+        positions = self.trading_client.get_all_positions()
+        return [pos.symbol for pos in positions]
+
+    def get_market_movers(self, percent_threshold=3):
+        """Fetch stocks that moved more than the given percent threshold in the last day."""
+        assets = self.trading_client.list_assets(status='active')
+        movers = []
+        for asset in assets:
+            try:
+                barset = self.trading_client.get_barset(asset.symbol, 'day', limit=2)
+                bars = barset[asset.symbol]
+                if len(bars) < 2:
+                    continue
+                
+                prev_close = bars[-2].c
+                latest_close = bars[-1].c
+                percent_change = ((latest_close - prev_close) / prev_close) * 100
+                
+                if abs(percent_change) >= percent_threshold:
+                    movers.append(asset.symbol)
+            except Exception as e:
+                print(f"Error fetching {asset.symbol}: {e}")
+        return movers
+
+    def get_market_news(self, start=None, end=None, symbols=[]):
+        # start and end are both date time string
+        # e.g. start=2024-01-03T00:00:00Z, end=2024-01-03T23:59:59Z
+        url = "https://data.alpaca.markets/v1beta1/news?sort=desc"
+        params = []
+        if symbols:
+            params.append(f"symbols={'%2'.join(symbols)}")
+        if start:
+            params.append(f"start={start}")
+        if end:
+            params.append(f"end={end}")
+        
+        if params:
+            url += "&" + "&".join(params)
+
+        headers = {
+            "accept": "application/json",
+            "APCA-API-KEY-ID": ALPACA_API_KEY,
+            "APCA-API-SECRET-KEY": ALPACA_SECRET_KEY
+        }
+
+        response = requests.get(url, headers=headers)
+        return response.text
