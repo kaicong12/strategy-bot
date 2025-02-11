@@ -1,47 +1,41 @@
-What is pair trading?
-Pair Trading (also known as Statistical Arbitrage) is a market-neutral trading strategy where you trade two correlated stocks by simultaneously going long on one and short on the other when their relative price relationship diverges.
+# Automated Trade Routine
 
-How Does Pair Trading Work?
-Find Highly Correlated Pairs
+## Step 1: Pre-Market Prep (6:30 - 9:00 AM)
+- ✅ **Check News & Sentiment**
+    - Macro news (Fed, CPI) & company news (earnings, upgrades, product launches).
+    - Use Google Alerts, Benzinga Pro, Twitter, StockTwits.
+- ✅ **Check Pre-Market Price Action**
+    - If AAPL/TSLA moves ±2%+ on high volume, consider trading.
 
-Identify two stocks that typically move together (e.g., Pepsi and Coca-Cola).
-Use correlation analysis and cointegration tests to ensure the pair maintains a stable relationship over time.
-Measure the Spread Between the Pairs
+## Step 2: Technical Analysis & Trade Setup (9:00 - 9:25 AM)
+- ✔ **Identify Key Levels**
+    - Support & Resistance: Look at yesterday’s high/low, pre-market high/low.
+    - VWAP (Volume Weighted Average Price): Helps determine trend direction.
+- ✔ **Check Indicators**
+    - RSI: Below 30 = Oversold (Possible long). Above 70 = Overbought (Possible short).
+    - 50-day & 200-day Moving Averages: Breakout above/below is significant.
+- ✔ **Set Trade Conditions**
+    - Only enter if price holds above/below key levels for 5-15 min after market open.
 
-Calculate the price difference or ratio of the two stocks.
-Use Z-score, standard deviations, or moving averages to measure divergence.
-Enter a Trade When the Spread Diverges
+## Step 3: Trade Execution (9:30 - 11:00 AM)
+- 📈 **Go Long (Buy) if:**
+    - Positive news, stock gaps up 2%+ on volume.
+    - Price holds above VWAP, pre-market high, or key resistance.
+    - Stop Loss: -1.5% to -2% below support. Take Profit: +3-5%.
+- 📉 **Go Short (Sell) if:**
+    - Negative news, stock gaps down 2%+ on volume.
+    - Price rejects VWAP or key resistance.
+    - Stop Loss: +1.5% to +2% above resistance. Take Profit: -3-5%.
 
-If Stock A becomes overpriced relative to Stock B:
-Short Stock A (overvalued)
-Long Stock B (undervalued)
-If the spread reverts to the mean, exit the trade for profit.
-Exit the Trade When the Spread Normalizes
+## Step 4: Risk & Automation
+- ✅ Max 1-2 Trades/Day (Avoid overtrading).
+- ✅ Risk 1-2% of Capital per Trade.
+- ✅ Use Alerts & Bracket Orders (Stop-Loss & Profit Target).
+- ✅ Track Performance & Adjust Weekly.
 
-Close both positions when the spread returns to its historical mean.
-
-Why is Pair Trading Good?
-✅ Market Neutral – Works in bull, bear, or sideways markets.
-✅ Lower Risk – One position hedges the other, reducing exposure.
-✅ Mean-Reverting – Profits when prices return to their historical relationship.
-✅ Well-Suited for Automated Trading – Uses statistical models for trade signals.
-
-⚠ Challenges:
-
-Finding Strongly Cointegrated Pairs – Correlation alone isn't enough; cointegration is better.
-Execution Timing – Requires frequent rebalancing.
-
-
-
-
------ Here onwards are for trading once a day -----
-
-🚀 Final Thoughts
-For a trader who only executes once per day, the best approach is to stick to longer trends and avoid strategies that require real-time decisions.
-
-Best Practices for You:
-✔ Run your strategy pre-market or post-market.
-✔ Use sentiment to confirm technical signals.
-✔ Avoid intraday trading—too much noise.
-✔ Pick one strategy and backtest before trading live.
-
+## Daily Routine
+- 🕡 **6:30 - 9:00 AM**: News & pre-market check
+- 🕘 **9:00 - 9:25 AM**: Set key levels & alerts
+- 🕤 **9:30 - 11:00 AM**: Trade if setup is confirmed
+- 📊 **After 11:00 AM**: Passive monitoring only
+- 🔍 **End of Day**: Review trades & refine strategy

@@ -24,16 +24,17 @@ class GPTValidator:
         return "YES" in decision
 
     def get_news_sentiment(self, news_content):
+        if not news_content:
+            return "Neutral", 0.0
         try:
             sentiment_response = self.openai_client.chat.completions.create(
                 model="gpt-4",
                 messages=[
-                    {"role": "system", "content": "Analyze the sentiment of this news text as Positive, Neutral, or Negative."},
+                    {"role": "system", "content": "Analyze the sentiment of this news text as Positive, Neutral, or Negative, and return a sentiment score between -1 (Negative) to 1 (Positive)."},
                     {"role": "user", "content": news_content}
                 ]
             )
-
-            return sentiment_response.choices[0].message.content
-        except Exception as e:
-            print(f"Error fetching sentiment for {ticker}: {e}")
-            return "Neutral"
+            result = sentiment_response.choices[0].message.content.split(";")
+            return result[0], float(result[1])
+        except:
+            return "Neutral", 0.0
