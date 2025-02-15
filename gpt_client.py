@@ -7,30 +7,25 @@ class GPTValidator:
     def __init__(self):
         self.openai_client = OpenAI(api_key=OPENAI_API_KEY)
 
-    def validate_trade_with_gpt(self, stock1, stock2, z_score):
-        prompt = f"""
-            I am a trading bot analyzing a statistical arbitrage setup.
-            Stock 1: {stock1}, Stock 2: {stock2}
-            Z-score: {z_score}
-
-            Should I enter this trade based on historical behavior?
-            Respond with 'YES' or 'NO' and a brief reason.
-        """
-        response = self.openai_client.chat.completions.create(
-            model="gpt-4",
-            messages=[{"role": "user", "content": prompt}]
-        )
-        decision = response.choices[0].message.content
-        return "YES" in decision
-
     def get_news_sentiment(self, news_content):
         if not news_content:
             return "Neutral", 0.0
+        
         try:
+            system_prompt = """Pretend you are an expert financial quant trader who is holding the AAPL stock. You will be analyzing the following news articles to determine the sentiment score of the news articles and the stock price of AAPL. +1 for positive sentiment, -1 for negative sentiment, 0 for neutral sentiment. The sentiment score will be used to determine if you should hold, buy, or sell the stock, and it should only range from -1 to 1, with -1 being bearish and +1 being bullish. Reply using the following template
+    
+            [Example Reply]:
+            +1, Bullish
+            -1, Bearish
+            0, Neutral
+
+            Here are the news articles to analyze:
+
+            """
             sentiment_response = self.openai_client.chat.completions.create(
                 model="gpt-4",
-                messages=[
-                    {"role": "system", "content": "Analyze the sentiment of this news text as Positive, Neutral, or Negative, and return a sentiment score between -1 (Negative) to 1 (Positive)."},
+                messages= [
+                    {"role": "system", "content": system_prompt},
                     {"role": "user", "content": news_content}
                 ]
             )

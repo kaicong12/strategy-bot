@@ -1,6 +1,24 @@
 from decimal import Decimal
 
 class Backtester:
+    """
+    1. News Sentiment Analysis
+    Extract sentiment score (+1 to -1)
+    Identify event type (earnings, macro news, etc.)
+
+    2. Technical Analysis Confirmation
+    Trend check: Is price above 200 EMA? ✅
+    Momentum check: Is MACD bullish? ✅
+    Volume check: Is OBV rising? ✅
+
+    3. Entry Decision
+    If all confirmations are met, execute a trade.
+    If indicators contradict sentiment, avoid trade or wait for better conditions.
+        
+    4. Risk Management
+    Stop-loss at recent support/resistance levels.
+    Adjust position size based on ATR (higher volatility = smaller size).
+    """
     def __init__(self, historical_data, initial_balance=10000, commission=0.001, slippage=0.0005):
         """
         Initializes the backtester with historical price data.
@@ -15,10 +33,6 @@ class Backtester:
         self.slippage = slippage
         self.position = 0  # Current position size (long/short)
         self.trade_log = []  # Stores trade history
-    
-    def is_trading_day(self, date):
-        """Checks if the given date is a trading day."""
-        return date.weekday() < 5  # Monday-Friday only
     
     def execute_trade(self, date, action, quantity, price):
         """
@@ -47,12 +61,10 @@ class Backtester:
         """
         for index, row in self.data.iterrows():
             trade_date = row['timestamp']
-            if not self.is_trading_day(trade_date):
-                continue  # Skip non-trading days
-            
             close_price = row['close_price']
             
-            # Example strategy: Buy if price drops 2% from previous close, sell if it rises 2%
+            # Strategy 1: Buy when sentiment is good, else sell when its bad
+            # C
             if index > 0:
                 prev_close = self.data.iloc[index - 1]['close_price']
                 if close_price <= prev_close * Decimal("0.98") and self.balance > close_price:
